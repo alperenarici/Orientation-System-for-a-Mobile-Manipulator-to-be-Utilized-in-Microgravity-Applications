@@ -2,6 +2,11 @@
 This system can be utilized for space mobile manipulators to execute 2 orientation motions. 
 This repository includes Unity Project Files&amp;Execution Files, Solidworks part files, Matlab codes.
 
+MATLAB&Unity TCP/IP Communication
+Arduino Uno&MATLAB TCP/IP Communication
+
+
+
 Parallel to the increase in outer space operations, studies that try to implement robotic systems into
 applications executed in microgravity environment gains popularity in near era. Due to the limited
 human resources and challenging environments in outer space, various robot manipulators have been
