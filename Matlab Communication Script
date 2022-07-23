@@ -1,20 +1,44 @@
-clc
-clear
+% Alperen ARICI
+% Matlab TCP/IP communication
+% Arduino Uno & Matlab
+% Matlab & Unity
+% Arduino Uno gets data from 4 distinct load cells(S1,S2,S3,S4) then matlab utilize this data for determine the center of mass.
+½ Matlab is used as client and Unity is used as server.
+
+clc;
+clear;
+clear all;
+%comport = serial('COM10','BaudRate',57600,'DataBits',8);
+%fopen(comport);
+axis([0 5 0 5]);
+grid on
+hold on
+
+pause(1)
 while(1)
 clc
 clear all
-tcpipClient = tcpip('127.0.0.1',55002,'NetworkRole','Client');
+%S1=str2num(fscanf(comport))
+%S2=str2num(fscanf(comport))
+%S3=str2num(fscanf(comport))
+%S4=str2num(fscanf(comport))
+
+%x=((0-S1/2)+(0-S2/2)+(2+S3/2)+(2+S4/2))/4
+%y=((0-S1/2)+(0+S2/2)+(2+S3/2)+(2-S4/2))/4
+x=2.5;
+y=2;
+tcpipClient = tcpip('127.0.0.1',55001,'NetworkRole','Client');
 set(tcpipClient,'Timeout',30);
 fopen(tcpipClient);
-x=0;
-y=-1;
-fwrite(tcpipClient,[num2str(x),'b',num2str(y)]);
+c=x-2.5;
+a=2.5-y;
+fwrite(tcpipClient,[num2str(a),'b',num2str(c)]);
+
+plot(x,y,'r*','linewidth',4)
+pause(0.001)
+cla
 delete(instrfindall)
 end
-...fclose(tcpipClient);
 
 
-½
-Matlab is used as client and Unity is used as server.
-½
 
