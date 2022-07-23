@@ -18,7 +18,9 @@ momentum to the given locomotion task.
 Graduation Project, İzmir Katip Çelebi University, İzmir, 2021-2022
 
 Alperen ARICI
+
 Abdulkadir KABUL
+
 Tamer YARDIMCI
 
 Assoc. Prof. Dr. Erkin GEZGİN
