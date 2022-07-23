@@ -1,0 +1,133 @@
+// Alperen ARICI
+// Matlab&Unity TCP/IP Communication
+// Unity as server, MATLAB as client
+// Receiver Script
+
+
+
+using UnityEngine;
+using System.Collections;
+using System.Net;
+using System.Net.Sockets;
+using System.Linq;
+using System;
+using System.IO;
+using System.Text;
+using System.Globalization;
+
+
+public class ReceiverScript : MonoBehaviour
+{
+    // Use this for initialization
+    TcpListener listener;   // define listener
+    String[] x;             // define string(x) split string x[0],x[1] from matlab
+    String temp;            //  define string(temp) getting string from matlab
+    String[] temp2;         //  define string(temp2) first parse string(before&after dot for x[0]) from matlab
+    String[] temp3;         //  define string(temp3) first parse string(before&after dot for x[1]) from matlab
+    public float x1;        //  x1 angle value to rotate cube(x-axis)
+    public float y1;        //  y1 angle value to rotate cube(y-axis)
+    void Start()
+    {
+        listener = new TcpListener(55001);      // listener port
+        listener.Start();
+        Debug.Log("Listening");                 // check connection
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        if (!listener.Pending())        //  do not do anything when not pending
+        {
+        }
+        else
+        {
+            Debug.Log("Socket Comes");      //  connection establish socket comes from port
+            TcpClient client = listener.AcceptTcpClient();      // tcp client
+            NetworkStream ns = client.GetStream();          // get stream
+            StreamReader reader = new StreamReader(ns);     // read stream
+            temp = reader.ReadToEnd();      //readtoend to string(temp)
+            x = temp.Split('b');            //split temp x and y values from matlab by char 'b' 
+            temp2 = x[0].Split('.');        //split float x values from matlab by '.' (before and after dot temp2[0].temp2[1])
+            temp3 = x[1].Split('.');        //split float y values from matlab by '.' (before and after dot temp3[0].temp3[1])
+
+
+            x1 = float.Parse(temp2[0]);     //convert temp2[0] value to float
+            y1 = float.Parse(temp3[0]);     //convert temp3[0] value to float
+
+
+            // Converting received datas from MATLAB to float
+
+            bool g1 = true;                 
+            bool g2 = true;                 
+            float result = float.Parse(temp2[0], CultureInfo.InvariantCulture);     
+            if (x1 >= 1 || x1 <= -1)        
+            {
+                if (x1 <= -1) { g1 = false; }       
+            }
+            else        //
+            {
+                if (result == 0f && temp2[0].TrimStart().StartsWith("-"))       
+                {
+                    result = -0f;       
+                    g1 = false;         
+                }
+            }
+
+            float result2 = float.Parse(temp3[0], CultureInfo.InvariantCulture);        
+            if (y1 >= 1 || y1 <= -1)        
+            {
+                if (y1 <= -1) { g2 = false; }       
+            }
+            else        //
+            {
+                if (result2 == 0f && temp3[0].TrimStart().StartsWith("-"))      
+                {
+                    result2 = -0f;      
+                    g2 = false;         
+                }
+            }
+            int len1 = 0;
+            bool x1float = false;
+            if (temp2.Length > 1)
+            {
+                x1float = true;
+                len1 = temp2[1].Length;
+            }       //find length after dot to determine how much zero after dot
+            if (x1float)
+            {
+                if (g1)
+                {
+                    x1 = x1 + float.Parse(temp2[1]) * (float)Math.Pow(10, -len1);
+                }       
+                else
+                {
+                    x1 = x1 - float.Parse(temp2[1]) * (float)Math.Pow(10, -len1);
+                }          
+            }
+
+            int len2 = 0;
+            bool y1float = false;
+            if (temp3.Length > 1)
+            {
+                y1float = true;
+                len2 = temp3[1].Length;
+
+            }     //find length after dot to determine how much zero after dot
+            if (y1float)
+            {
+                if (g2)
+                {
+                    y1 = y1 + float.Parse(temp3[1]) * (float)Math.Pow(10, -len2);
+                    
+                }
+                else
+                {
+                    y1 = y1 - float.Parse(temp3[1]) * (float)Math.Pow(10, -len2);
+                }
+            }
+            
+
+            Debug.Log(x1);
+            Debug.Log(y1);
+        }
+    }
+}
