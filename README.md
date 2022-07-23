@@ -13,3 +13,9 @@ this, current study tries to propose an orientation system that can be implement
 manipulator to provide rotational locomotion. The system mainly utilizes a rotating flying wheel and
 two degrees of freedom spherical parallel manipulator to implement conservation of angular
 momentum to the given locomotion task.
+
+
+Graduation Project, İzmir Katip Çelebi University, İzmir, 2022
+Alperen ARICI
+Abdulkadir KABUL
+Tamer YARDIMCI
